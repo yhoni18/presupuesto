@@ -1,0 +1,8 @@
+Grupo 06 
+Integrantes
+Pulido Vasquez Yhoni
+Principe Guerra Ingrid
+Cruz Montenegro Eduardo
+
+usuario: admin
+clave:123

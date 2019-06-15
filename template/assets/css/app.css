@@ -1,0 +1,112 @@
+body {
+	font-family: 'Open Sans','segoe ui';
+}
+.print_text {
+	font-family: Roboto Mono;
+}
+
+.hr-text {
+	border-top: 1px dashed #8c8b8b;
+}
+
+.tree{
+	list-style: none;
+	padding-left: 20px;
+	position: relative;
+	font-family: 'Roboto Mono';
+	font-weight: bold;
+}
+.tree-blue {
+	color: #75C489;
+
+}
+.tree-green {
+	color: #FD5C63;
+}
+.tree:before{ 
+	content: '';
+	width: 1px;
+	background: #1b335f;
+	top: 0;
+	bottom:7px;
+	left:0;
+	position: absolute;
+}
+.tree li{ 
+	position: relative;
+	margin-top:10px;
+}
+.tree-blue li:hover, .tree li:focus{
+	color: #AECE82;
+	cursor: pointer;
+} 
+.tree-green li:hover, .tree li:focus{
+	color: #EA3E23;
+	cursor: pointer;
+} 
+.tree li:before{ 
+	content: '';
+	width: 20px;
+	height: 1px;
+	background: #1b335f;
+	top: 12px;
+	left:-20px;
+	position: absolute;
+}
+.tree .tree{display: none;}
+/**/
+
+.catalogo {
+	border: 1px solid #e3e3e3;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 1em;
+}
+
+.catalogo-card {
+	position: relative;
+}
+
+.catalogo-text {
+	position: absolute;
+	top: 80%;
+	left: 50%;
+	background-color: #222831;
+	color: white;
+	padding-left: 20px;
+	padding-right: 20px;
+	align-items: center;
+	opacity: 0.8;
+	border-radius: 4px;
+	transform: translate(-50%, -50%);
+
+}
+
+.catalogo-item {
+	/*min-width:  250px;*/
+	width:  180px;
+	height: 170px;
+	margin: 5px;
+}
+
+.carta {
+	border: 1px solid #e3e3e3;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: center;
+	padding: 1em;
+}
+
+.carta-item {
+	padding: 1em 1.5em;
+	background-color: #222831;
+	color: white; 
+	opacity: 0.8;
+	border-radius: 4px;
+}
+
+.b-y {
+	border-left: 6px solid #FBBC05;
+	cursor: pointer;
+}
