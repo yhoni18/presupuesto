@@ -1,64 +1,49 @@
-
-<nav class="navbar navbar-expand-lg  navbar-dark bg-gradient-dark ">
-    
-    <a class="navbar-brand" href="#">Presupuestos</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="btn btn-success"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-        <ul class="navbar-nav mr-auto">
-            
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Movimientos
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                    <a class="dropdown-item" href="#">Presupuestos</a>
-                    <a class="dropdown-item" href="#">Orden de Compras</a>
-                    <a class="dropdown-item" href="#">Orden de Conformidad</a>
-
-                </div>
-            </li>    
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Mantenimiento
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-
-                    
-                    
-                    <a class="dropdown-item" href="<?=site_url(array('producto', 'index'))?>"><i class="fa fa-fw fa-shopping-cart"></i> Productos</a>
-
-                    <a class="dropdown-item" href="#">Compras</a>
-                    <a class="dropdown-item" href="#">Pagos</a>
-
-                </div>
-            </li>
-
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Seguridad
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<?php echo site_url('usuario/listar') ?>">Usuarios</a>
-                    <a class="dropdown-item" href="<?php echo site_url('rol/listar') ?>">Roles</a>
-                </div>
-            </li>
-
-
-        </ul>
-
+<nav class="navbar navbar-expand-lg  navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Presupuestos</a>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Movimientos <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?= site_url(array('presupuesto')) ?>">Presupuestos</a></li>
+                        <li><a href="#">Orden de Compra</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Orden de Conformidad</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mantenimiento <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?= site_url(array('producto')) ?>">Produtos</a></li>
+                        <li><a href="#">Compras</a></li>
+                        <li><a href="#">Empleados</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Seguridad <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="<?php echo site_url('usuario/listar') ?>">Usuarios</a></li>
+                        <li><a href="<?php echo site_url('rol/listar') ?>">Roles</a></li>
+                    </ul>
+                </li>
+            </ul>
         
-        <a href='<?php echo site_url('Autenticacion/logout'); ?>' class='btn btn-info'>Desconectar</a>
-        
+            <form class="navbar-form navbar-left">
+                
+            </form>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="<?= site_url("Autenticacion/logout") ?>">Desconectar</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
-
-</header>
-
 

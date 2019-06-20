@@ -16,10 +16,10 @@
             <div class="col-xs-12">
                 <div class="form-group input-group">
                     <span class="input-group-addon">Categoría</span>
-                    <select name="sub_cod" class="form-control">
+                    <select name="cat_codigo" class="form-control">
                         <option>-- SELECCIONE --</option>
-                        <?php foreach($subcategorias as $category): ?>
-                        <option value="<?=$category->sub_cod?>"><?=$category->sub_nombre?></option>
+                        <?php foreach($categorias as $category): ?>
+                        <option <?= $category->cat_cod == $producto->cat_codigo ? "selected" : "" ?> value="<?=$category->cat_cod?>"><?=$category->cat_nombre?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -27,21 +27,32 @@
             <div class="col-xs-12">
                 <div class="form-group input-group">
                     <span class="input-group-addon">Marca</span>
-                    <select name="marc_cod" class="form-control">
+                    <select name="mar_codigo" class="form-control">
                         <option>-- SELECCIONE --</option>
                         <?php foreach($marcas as $marca): ?>
-                        <option value="<?=$marca->marc_cod?>"><?=$marca->marc_nombre?></option>
+                        <option <?= $marca->mar_codigo == $producto->mar_codigo ? "selected" : "" ?> value="<?=$marca->mar_codigo?>"><?=$marca->mar_nombre?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
             </div>
             <div class="col-xs-12">
                 <div class="form-group input-group">
-                    <span class="input-group-addon">Presentacion</span>
-                    <select required="required" name="pres_cod" class="form-control">
+                    <span class="input-group-addon">Unidad</span>
+                    <select required="required" name="uni_codigo" class="form-control">
                         <option>-- SELECCIONE --</option>
-                        <?php foreach($presentaciones as $presentacion): ?>
-                        <option value="<?=$presentacion->pres_cod?>"><?=$presentacion->pres_nombre?></option>
+                        <?php foreach($unidades as $unidad): ?>
+                        <option <?= $unidad->uni_codigo == $producto->uni_codigo ? "selected" : "" ?> value="<?=$unidad->uni_codigo?>"><?=$unidad->uni_descripcion?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="form-group input-group">
+                    <span class="input-group-addon">Almacen</span>
+                    <select required="required" name="alm_codigo" class="form-control">
+                        <option>-- SELECCIONE --</option>
+                        <?php foreach($almacenes as $almacen): ?>
+                        <option <?= $almacen->alm_codigo == $producto->alm_codigo ? "selected" : "" ?> value="<?=$almacen->alm_codigo?>"><?=$almacen->alm_nombre?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>
@@ -49,7 +60,7 @@
              <div class="col-xs-12">
                 <div class="form-group input-group">
                     <span class="input-group-addon">Nombre</span>
-                    <input letters="true" required="required" class="form-control" type="text" name="prod_descripcion" value="<?=$producto->prod_nombre?>">
+                    <input letters="true" required="required" class="form-control" type="text" name="prod_descripcion" value="<?=$producto->prod_nombre_comercial?>">
                 </div>
             </div>
              <div class="col-xs-12">
@@ -64,27 +75,6 @@
                     <input required="required" class="form-control" type="text" name="prod_precio_compra" value="<?=$producto->prod_precio_compra?>">
                 </div>
             </div>
-            <div class="col-xs-12">
-                <div class="form-group input-group">
-                    <span class="input-group-addon">Incremento</span>
-                    <input max="100" required="required" value="<?=$producto->prod_incremento?>" class="form-control" type="number" name="prod_incremento">
-                </div>
-            </div>
-            <div class="col-xs-12">
-                <div class="form-group input-group">
-                    <span class="input-group-addon">Imagen</span>
-                    <input name="imagen" type="file" class="form-control">
-                </div>
-            </div>
-            <div class="col-xs-12">
-                <div class="form-group input-group">
-                    <span class="input-group-addon">Estado</span>
-                    <select class="form-control" name="prod_estado">
-                        <option value="1">Activo</option>
-                        <option value="0">Inactivo</option>
-                    </select>
-                </div>
-            </div>
             
             <div class="col-xs-12">
                 <div class="form-group">
@@ -97,12 +87,3 @@
         </form>
     </div>
 </div>
-
-<script>
-    $(document).ready(function(){
-        $("select[name='sub_cod']").val('<?=$producto->sub_cod?>').trigger('change');
-        $("select[name='marc_cod']").val('<?=$producto->marc_cod?>').trigger('change');
-        $("select[name='pres_cod']").val('<?=$producto->pres_cod?>').trigger('change');
-        $("select[name='prod_estado']").val('<?=$producto->prod_estado?>').trigger('change');
-    });
-</script>

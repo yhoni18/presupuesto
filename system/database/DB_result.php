@@ -662,4 +662,12 @@ class CI_DB_result {
 		return new $class_name();
 	}
 
+
+	public function next_result()
+	{
+		if (is_object($this->conn_id))
+		{
+			return mysqli_next_result($this->conn_id);
+		}
+	}
 }
