@@ -29,7 +29,7 @@
             <hr class='separator tmarg15'/>
             <div class='form_foot'>
                 <input type="submit" class='btn btn-primary' name='btnRegistrar' value='Registrar'>
-                <a href='<?php echo site_url('rol/listar') ?>' class='btn btn-light' id='btnCancelar'>Cancelar</a>
+                <a type="submit" href='<?php echo site_url('rol/listar') ?>' class='btn btn-danger' id='btnCancelar'>Cancelar</a>
             </div>
             <div>
                 <label><?php echo IssetOr($rpta, ''); ?></label>

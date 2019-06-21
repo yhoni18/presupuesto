@@ -9,4 +9,5 @@ class UnidadMedida_model extends CI_Model {
         $query->free_result();
         return $rs;
     }
+    
 }

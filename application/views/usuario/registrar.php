@@ -90,7 +90,7 @@
         <hr class='separator tmarg15'/>
         <div class='form_foot'>
             <input type="submit" class='btn btn-primary' name='btnRegistrar' value='Registrar'>
-            <a href='<?php echo site_url('usuario/listar') ?>' class='btn btn-light' id='btnCancelar'>Cancelar</a>
+            <a href='<?php echo site_url('usuario/listar') ?>' class='btn btn-danger id='btnCancelar'>Cancelar</a>
         </div>
     </div>
 </form>

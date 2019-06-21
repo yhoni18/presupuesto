@@ -24,8 +24,9 @@ class Producto_model extends CI_Model {
         $nom =  $_POST['prod_descripcion'];
         $pc = $_POST['prod_precio_compra'];
         $pv =  $_POST['prod_precio_venta'];
+        $cant =  $_POST['prod_cant'];
         $almacen = $_POST['alm_codigo'];
-        $result = $this->db->query("CALL pa_producto_actualizar('$id', '$nom', '$marca', '$cat', '$unidad', '$almacen', '$pc', '$pv')");
+        $result = $this->db->query("CALL pa_producto_actualizar('$id', '$nom', '$marca', '$cat', '$unidad', '$almacen', '$pc', '$pv','$cant')");
         return $result ? true : false;
     }
 
@@ -37,8 +38,9 @@ class Producto_model extends CI_Model {
         $almacen = $_POST['alm_codigo'];
         $pc = $_POST['prod_precio_compra'];
         $pv =  $_POST['prod_precio_venta'];
+        $cant =  $_POST['prod_cant'];
         $nombre = strtoupper($nombre);
-        $result = $this->db->query("CALL PA_Registrar_producto('$nombre', '$pc', '$pv', '$marca', '$categoria', '$unidad', '$almacen')");
+        $result = $this->db->query("CALL PA_Registrar_producto('$nombre', '$pc', '$pv','$cant', '$marca', '$categoria', '$unidad', '$almacen')");
         return $result ? true : false;
     }
 

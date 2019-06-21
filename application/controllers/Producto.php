@@ -8,7 +8,6 @@ class Producto extends CI_Controller {
         $rows = $this->producto_model->fetch_all($buscar);
         $this->load->view('index/header');
         $this->load->view('index/menu');
-        
         $this->load->view('productos/index', compact('rows'));
     }
 

@@ -73,10 +73,18 @@
                     <input required="required" class="form-control" type="number" name="prod_precio_venta">
                 </div>
             </div>
+            
              <div class="col-xs-12">
                 <div class="form-group input-group">
                     <span class="input-group-addon">Precio Compra</span>
-                    <input required="required" class="form-control" type="text" name="prod_precio_compra">
+                    <input required="required" class="form-control" type="number" name="prod_precio_compra">
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+                <div class="form-group input-group">
+                    <span class="input-group-addon">Cantidad</span>
+                    <input required="required" class="form-control" type="number" name="prod_cant">
                 </div>
             </div>
             
@@ -85,9 +93,13 @@
                     <button class="btn btn-success" type="submit">
                         <i class="fa fa-fw fa-save"></i> Guardar
                     </button>
+                    <a href='<?php echo site_url('producto') ?>' class='btn btn-danger id='btnCancelar'>Cancelar</a>
                 </div>
             </div>
             
         </form>
     </div>
+
+    
+
 </div>

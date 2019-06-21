@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-lg  navbar-default">
+
+<nav class="navbar navbar-expand-lg  navbar-default ">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
@@ -15,8 +16,9 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Movimientos <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="<?= site_url(array('presupuesto')) ?>">Presupuestos</a></li>
-                        <li><a href="#">Orden de Compra</a></li>
                         <li role="separator" class="divider"></li>
+                        <li><a href="#">Orden de Compra</a></li>
+                        
                         <li><a href="#">Orden de Conformidad</a></li>
                     </ul>
                 </li>
@@ -24,6 +26,14 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mantenimiento <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="<?= site_url(array('producto')) ?>">Produtos</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="<?= site_url(array('almacen')) ?>">Almacen</a></li>
+                        <li><a href="<?= site_url(array('categoria')) ?>">Categorias</a></li>
+                        <li><a href="<?= site_url(array('marca')) ?>">Marcas</a></li>
+                        <li><a href="<?= site_url(array('unidad')) ?>">Unidades de Medidas</a></li>
+                       
+
+                        <li role="separator" class="divider"></li>
                         <li><a href="#">Compras</a></li>
                         <li><a href="#">Empleados</a></li>
                     </ul>

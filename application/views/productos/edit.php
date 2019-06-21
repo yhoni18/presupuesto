@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-xs-12 col-md-offset-2 col-md-6">
-        <h3 class="page-header">Editando Proudcto N°<?= $producto->prod_cod ?></h3>
+        <h3 class="page-header">Editando Producto N°<?= $producto->prod_cod ?></h3>
     </div>
     <div class="col-xs-12 col-md-offset-2 col-md-6">
         <?php if(isset($result)):?>
@@ -24,6 +24,7 @@
                     </select>
                 </div>
             </div>
+
             <div class="col-xs-12">
                 <div class="form-group input-group">
                     <span class="input-group-addon">Marca</span>
@@ -35,6 +36,7 @@
                     </select>
                 </div>
             </div>
+
             <div class="col-xs-12">
                 <div class="form-group input-group">
                     <span class="input-group-addon">Unidad</span>
@@ -60,7 +62,8 @@
              <div class="col-xs-12">
                 <div class="form-group input-group">
                     <span class="input-group-addon">Nombre</span>
-                    <input letters="true" required="required" class="form-control" type="text" name="prod_descripcion" value="<?=$producto->prod_nombre_comercial?>">
+                    <input letters="true" required="required" class="form-control" type="text" 
+                     name="prod_descripcion" value="<?=$producto->prod_nombre_comercial?>">
                 </div>
             </div>
              <div class="col-xs-12">
@@ -72,15 +75,27 @@
              <div class="col-xs-12">
                 <div class="form-group input-group">
                     <span class="input-group-addon">Precio Compra</span>
-                    <input required="required" class="form-control" type="text" name="prod_precio_compra" value="<?=$producto->prod_precio_compra?>">
+                    <input required="required" class="form-control" type="number" name="prod_precio_compra" 
+                     value="<?=$producto->prod_precio_compra?>">
                 </div>
             </div>
+
+            <div class="col-xs-12">
+                <div class="form-group input-group">
+                    <span class="input-group-addon">Cantidad</span>
+                    <input required="required" class="form-control" type="number" name="prod_cant" 
+                     value="<?=$producto->prod_cant?>">
+                </div>
+            </div>
+
+
             
             <div class="col-xs-12">
                 <div class="form-group">
                     <button class="btn btn-success" type="submit">
                         <i class="fa fa-fw fa-save"></i> Guardar
                     </button>
+                    <a href='<?php echo site_url('producto') ?>' class='btn btn-danger id='btnCancelar'>Cancelar</a>
                 </div>
             </div>
             

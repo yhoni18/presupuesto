@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 15-06-2019 a las 04:07:23
+-- Tiempo de generación: 21-06-2019 a las 11:08:01
 -- Versión del servidor: 10.1.34-MariaDB
 -- Versión de PHP: 5.6.37
 
@@ -41,7 +41,7 @@ WHERE `alm_codigo` = p_alm_codigo;
 END$$
 
 DROP PROCEDURE IF EXISTS `PA_Actualizar_categoria`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Actualizar_categoria` (IN `p_cat_cod` INT(11), IN `p_cat_nombre` CHAR(8), IN `p_cat_estado` CHAR(8))  BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Actualizar_categoria` (IN `p_cat_cod` INT(11), IN `p_cat_nombre` CHAR(8), IN `p_cat_estado` TINYINT)  BEGIN
 UPDATE `categoria` 
 SET `cat_nombre` = p_cat_nombre, `cat_estado` = p_cat_estado
 WHERE `cat_cod` = p_cat_cod;
@@ -137,6 +137,11 @@ DELETE FROM `presupuesto`
 WHERE `pres_cod` = p_pres_cod;
 END$$
 
+DROP PROCEDURE IF EXISTS `pa_borrar_producto`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pa_borrar_producto` (IN `id` INT)  BEGIN
+DELETE FROM producto WHERE prod_cod = id;
+END$$
+
 DROP PROCEDURE IF EXISTS `PA_Borrar_proveedor`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Borrar_proveedor` (IN `p_prov_cod` INT(11))  BEGIN
 DELETE FROM `proveedor`
@@ -174,11 +179,26 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `pa_empleado_listCbo` (IN `_emp_codi
 	WHERE emp.emp_estado = 1 OR (emp.emp_codigo = _emp_codigo);
 END$$
 
+DROP PROCEDURE IF EXISTS `PA_Listar_categoria`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Listar_categoria` (IN `buscar` VARCHAR(50))  BEGIN
+SELECT * FROM categoria WHERE cat_nombre LIKE buscar;
+END$$
+
 DROP PROCEDURE IF EXISTS `PA_Listar_compra`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Listar_compra` ()  BEGIN
 SELECT `comp_cod`, `comp_fecha`, `comp_costo_total`, `comp_estado`, 
 `prov_cod`
 FROM `compra`;
+END$$
+
+DROP PROCEDURE IF EXISTS `PA_Listar_marca`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Listar_marca` (IN `buscar` VARCHAR(50))  BEGIN
+SELECT * FROM marca WHERE mar_nombre LIKE buscar;
+END$$
+
+DROP PROCEDURE IF EXISTS `pa_listar_marca_estado`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pa_listar_marca_estado` (IN `estado` TINYINT(1), IN `buscar` VARCHAR(50))  BEGIN
+SELECT * FROM marca WHERE mar_estado = estado AND mar_nombre LIKE buscar;
 END$$
 
 DROP PROCEDURE IF EXISTS `PA_Listar_presupuesto`$$
@@ -191,9 +211,33 @@ END$$
 
 DROP PROCEDURE IF EXISTS `PA_Listar_producto`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Listar_producto` ()  BEGIN
-SELECT `prod_cod`, `prod_nombre_comercial`, `prod_precio_compra`, `prod_precio_venta`, 
-`mar_codigo`, `cat_codigo`, `uni_codigo`, `alm_codigo`
-FROM `producto`;
+SELECT `p`.`prod_cod`, `p`.`prod_nombre_comercial`, `p`.`prod_precio_compra`, `p`.`prod_precio_venta`, `p`.`prod_cant`,
+`p`.`mar_codigo`, `p`.`cat_codigo`, `p`.`uni_codigo`, `p`.`alm_codigo`,
+m.mar_nombre, c.cat_nombre, a.alm_nombre, u.uni_descripcion
+FROM `producto` `p` INNER JOIN marca m ON p.mar_codigo = m.mar_codigo
+INNER JOIN categoria c ON p.cat_codigo = c.cat_cod
+INNER JOIN almacen a ON a.alm_codigo = p.alm_codigo
+INNER JOIN unidad_medida u ON p.uni_codigo = u.uni_codigo;
+END$$
+
+DROP PROCEDURE IF EXISTS `PA_Listar_unidad`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Listar_unidad` (IN `buscar` CHAR(50))  BEGIN
+SELECT * FROM unidad_medida WHERE uni_descripcion LIKE buscar;
+END$$
+
+DROP PROCEDURE IF EXISTS `pa_lista_almacen`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pa_lista_almacen` (IN `buscar` VARCHAR(50))  BEGIN
+SELECT * FROM almacen WHERE alm_nombre LIKE buscar;
+END$$
+
+DROP PROCEDURE IF EXISTS `pa_lista_categoria_estado`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pa_lista_categoria_estado` (IN `estado` TINYINT(1), IN `buscar` VARCHAR(50))  BEGIN
+SELECT * FROM categoria WHERE cat_estado = 1 AND cat_nombre LIKE buscar;
+END$$
+
+DROP PROCEDURE IF EXISTS `pa_lista_unidades`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pa_lista_unidades` (IN `buscar` VARCHAR(50), IN `estado` TINYINT(1))  BEGIN
+SELECT * FROM unidad_medida WHERE uni_estado = estado AND uni_descripcion LIKE buscar;
 END$$
 
 DROP PROCEDURE IF EXISTS `PA_marca_x_Cod`$$
@@ -211,6 +255,15 @@ FROM `orden_ejecucion`
 WHERE `ord_cod` = p_ord_cod;
 END$$
 
+DROP PROCEDURE IF EXISTS `pa_presupuesto_listar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pa_presupuesto_listar` (IN `buscar` VARCHAR(70))  BEGIN
+SELECT *, c.cli_razon_social
+FROM presupuesto p 
+INNER JOIN cliente c ON p.cli_codigo = c.cli_codigo
+WHERE c.cli_razon_social LIKE buscar OR p.pres_lugar_trabajo LIKE buscar
+OR p.pres_encargado LIKE buscar;
+END$$
+
 DROP PROCEDURE IF EXISTS `PA_presupuesto_x_Cod`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_presupuesto_x_Cod` (IN `p_pres_cod` INT(11))  BEGIN
 SELECT `pres_cod`, `pres_fecha_emision`, `pres_fecha_recepcion`, `pres_forma_pago`, 
@@ -220,9 +273,22 @@ FROM `presupuesto`
 WHERE `pres_cod` = p_pres_cod;
 END$$
 
+DROP PROCEDURE IF EXISTS `pa_producto_actualizar`$$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `pa_producto_actualizar` (IN `prod_codigo` INT, IN `descripcion` VARCHAR(150), IN `mar_cod` INT, IN `cat_cod` INT, IN `uni_cod` INT, IN `alm_cod` INT, IN `precio_compra` DECIMAL(8,2), IN `precio_venta` DECIMAL(8,2), IN `prod_cant` DECIMAL(8,0))  BEGIN
+UPDATE producto SET
+prod_nombre_comercial = descripcion,
+mar_codigo = mar_cod,
+cat_codigo = cat_cod,
+uni_codigo = uni_cod,
+alm_codigo = alm_cod,
+prod_precio_compra = precio_compra,
+prod_precio_venta = precio_venta ,
+prod_cant=prod_cant WHERE prod_cod = prod_codigo;
+END$$
+
 DROP PROCEDURE IF EXISTS `PA_producto_x_Cod`$$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_producto_x_Cod` (IN `p_prod_cod` INT(11))  BEGIN
-SELECT `prod_cod`, `prod_nombre_comercial`, `prod_precio_compra`, `prod_precio_venta`, 
+SELECT `prod_cod`, `prod_nombre_comercial`, `prod_precio_compra`, `prod_precio_venta`, `prod_cant`,
 `mar_codigo`, `cat_codigo`, `uni_codigo`, `alm_codigo`
 FROM `producto`
 WHERE `prod_cod` = p_prod_cod;
@@ -251,15 +317,15 @@ p_actpro_cantidad, p_actpro_total);
 END$$
 
 DROP PROCEDURE IF EXISTS `PA_Registrar_almacen`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Registrar_almacen` (IN `p_alm_codigo` INT(11), IN `p_alm_nombre` VARCHAR(45), IN `p_alm_direccion` VARCHAR(100))  BEGIN
-INSERT INTO `almacen`(`alm_codigo`, `alm_nombre`, `alm_direccion`) 
-VALUES (p_alm_codigo, p_alm_nombre, p_alm_direccion);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Registrar_almacen` (IN `p_alm_nombre` VARCHAR(45), IN `p_alm_direccion` VARCHAR(100))  BEGIN
+INSERT INTO `almacen`( `alm_nombre`, `alm_direccion`) 
+VALUES ( p_alm_nombre, p_alm_direccion);
 END$$
 
 DROP PROCEDURE IF EXISTS `PA_Registrar_categoria`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Registrar_categoria` (IN `p_cat_cod` INT(11), IN `p_cat_nombre` CHAR(8), IN `p_cat_estado` CHAR(8))  BEGIN
-INSERT INTO `categoria`(`cat_cod`, `cat_nombre`, `cat_estado`) 
-VALUES (p_cat_cod, p_cat_nombre, p_cat_estado);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Registrar_categoria` (IN `p_cat_nombre` CHAR(8), IN `p_cat_estado` TINYINT)  BEGIN
+INSERT INTO `categoria`( `cat_nombre`, `cat_estado`) 
+VALUES ( p_cat_nombre, p_cat_estado);
 END$$
 
 DROP PROCEDURE IF EXISTS `PA_Registrar_cliente`$$
@@ -297,9 +363,9 @@ p_emp_estado, p_emp_sexo, p_tdoc_cod, p_emp_numero_doc);
 END$$
 
 DROP PROCEDURE IF EXISTS `PA_Registrar_marca`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Registrar_marca` (IN `p_mar_codigo` INT(11), IN `p_mar_nombre` VARCHAR(45), IN `p_mar_estado` CHAR(8))  BEGIN
-INSERT INTO `marca`(`mar_codigo`, `mar_nombre`, `mar_estado`) 
-VALUES (p_mar_codigo, p_mar_nombre, p_mar_estado);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Registrar_marca` (IN `p_mar_nombre` VARCHAR(45), IN `p_mar_estado` CHAR(8))  BEGIN
+INSERT INTO `marca`( `mar_nombre`, `mar_estado`) 
+VALUES ( p_mar_nombre, p_mar_estado);
 END$$
 
 DROP PROCEDURE IF EXISTS `PA_Registrar_orden_ejecucion`$$
@@ -321,10 +387,10 @@ p_pres_costo_total, p_cli_codigo, p_pres_encargado);
 END$$
 
 DROP PROCEDURE IF EXISTS `PA_Registrar_producto`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Registrar_producto` (IN `p_prod_cod` INT(11), IN `p_prod_nombre_comercial` VARCHAR(150), IN `p_prod_precio_compra` DECIMAL(8,2) UNSIGNED, IN `p_prod_precio_venta` DECIMAL(8,2) UNSIGNED, IN `p_mar_codigo` INT(11), IN `p_cat_codigo` INT(11), IN `p_uni_codigo` INT(11), IN `p_alm_codigo` INT(11))  BEGIN
-INSERT INTO `producto`(`prod_cod`, `prod_nombre_comercial`, `prod_precio_compra`, `prod_precio_venta`, 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Registrar_producto` (IN `p_prod_nombre_comercial` VARCHAR(150), IN `p_prod_precio_compra` DECIMAL(8,2) UNSIGNED, IN `p_prod_precio_venta` DECIMAL(8,2) UNSIGNED, IN `p_prod_cant` DECIMAL(8,0) UNSIGNED, IN `p_mar_codigo` INT(11), IN `p_cat_codigo` INT(11), IN `p_uni_codigo` INT(11), IN `p_alm_codigo` INT(11))  BEGIN
+INSERT INTO `producto`(`prod_nombre_comercial`, `prod_precio_compra`, `prod_precio_venta`, `prod_cant`,
 `mar_codigo`, `cat_codigo`, `uni_codigo`, `alm_codigo`) 
-VALUES (p_prod_cod, p_prod_nombre_comercial, p_prod_precio_compra, p_prod_precio_venta, 
+VALUES (p_prod_nombre_comercial, p_prod_precio_compra, p_prod_precio_venta, p_prod_cant, 
 p_mar_codigo, p_cat_codigo, p_uni_codigo, p_alm_codigo);
 END$$
 
@@ -343,9 +409,9 @@ VALUES (p_tdoc_cod, p_tdoc_nombre);
 END$$
 
 DROP PROCEDURE IF EXISTS `PA_Registrar_unidad_medida`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Registrar_unidad_medida` (IN `p_uni_codigo` INT(11), IN `p_uni_descripcion` VARCHAR(45), IN `p_uni_estado` CHAR(8))  BEGIN
-INSERT INTO `unidad_medida`(`uni_codigo`, `uni_descripcion`, `uni_estado`) 
-VALUES (p_uni_codigo, p_uni_descripcion, p_uni_estado);
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PA_Registrar_unidad_medida` (IN `p_uni_descripcion` VARCHAR(45), IN `p_uni_estado` CHAR(8))  BEGIN
+INSERT INTO `unidad_medida`( `uni_descripcion`, `uni_estado`) 
+VALUES ( p_uni_descripcion, p_uni_estado);
 END$$
 
 DROP PROCEDURE IF EXISTS `pa_rol_activate`$$
@@ -633,7 +699,11 @@ CREATE TABLE `almacen` (
 --
 
 INSERT INTO `almacen` (`alm_codigo`, `alm_nombre`, `alm_direccion`) VALUES
-(1, 'Almacen1', 'S/N');
+(0, 'almacen3', 'direccion3'),
+(1, 'Almacen1', 'S/N'),
+(2, 'Almacen2', 'S/N'),
+(3, 'Almacen4', 'direccion4'),
+(5, 'almacen5', 'almacen6');
 
 -- --------------------------------------------------------
 
@@ -645,7 +715,7 @@ DROP TABLE IF EXISTS `categoria`;
 CREATE TABLE `categoria` (
   `cat_cod` int(11) NOT NULL,
   `cat_nombre` char(8) NOT NULL,
-  `cat_estado` char(8) NOT NULL
+  `cat_estado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -653,7 +723,9 @@ CREATE TABLE `categoria` (
 --
 
 INSERT INTO `categoria` (`cat_cod`, `cat_nombre`, `cat_estado`) VALUES
-(1, 'Servicio', '1');
+(1, 'Servicio', 1),
+(2, 'Producto', 1),
+(9, 'Material', 0);
 
 -- --------------------------------------------------------
 
@@ -670,6 +742,13 @@ CREATE TABLE `cliente` (
   `cli_telefono` char(9) DEFAULT NULL,
   `cli_email` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `cliente`
+--
+
+INSERT INTO `cliente` (`cli_codigo`, `cli_razon_social`, `cli_ruc`, `cli_direccion`, `cli_telefono`, `cli_email`) VALUES
+(1, 'TESTEO', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -775,7 +854,7 @@ DROP TABLE IF EXISTS `marca`;
 CREATE TABLE `marca` (
   `mar_codigo` int(11) NOT NULL,
   `mar_nombre` varchar(45) DEFAULT NULL,
-  `mar_estado` char(8) NOT NULL
+  `mar_estado` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -783,7 +862,11 @@ CREATE TABLE `marca` (
 --
 
 INSERT INTO `marca` (`mar_codigo`, `mar_nombre`, `mar_estado`) VALUES
-(1, 'prueba', '1');
+(1, 'prueba', 0),
+(2, 'Prueba2', 1),
+(3, 'Marcados', 0),
+(6, 'Prueba3', 1),
+(8, 'Activo', 1);
 
 -- --------------------------------------------------------
 
@@ -823,6 +906,14 @@ CREATE TABLE `presupuesto` (
   `pres_encargado` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Volcado de datos para la tabla `presupuesto`
+--
+
+INSERT INTO `presupuesto` (`pres_cod`, `pres_fecha_emision`, `pres_fecha_recepcion`, `pres_forma_pago`, `pres_lugar_trabajo`, `pres_estado`, `pres_costo_mano_obra`, `pres_costo_materiales`, `pres_costo_total`, `cli_codigo`, `pres_encargado`) VALUES
+(0, '2019-06-20', '2019-06-20', NULL, NULL, NULL, NULL, NULL, NULL, 1, ''),
+(1, '2019-06-20', '2019-06-20', NULL, NULL, NULL, NULL, NULL, NULL, 1, '');
+
 -- --------------------------------------------------------
 
 --
@@ -832,9 +923,10 @@ CREATE TABLE `presupuesto` (
 DROP TABLE IF EXISTS `producto`;
 CREATE TABLE `producto` (
   `prod_cod` int(11) NOT NULL,
-  `prod_nombre_comercial` varchar(150) DEFAULT NULL,
+  `prod_nombre_comercial` varchar(150) NOT NULL,
   `prod_precio_compra` decimal(8,2) UNSIGNED DEFAULT NULL,
   `prod_precio_venta` decimal(8,2) UNSIGNED DEFAULT NULL,
+  `prod_cant` decimal(8,0) UNSIGNED DEFAULT NULL,
   `mar_codigo` int(11) DEFAULT NULL,
   `cat_codigo` int(11) DEFAULT NULL,
   `uni_codigo` int(11) DEFAULT NULL,
@@ -845,8 +937,10 @@ CREATE TABLE `producto` (
 -- Volcado de datos para la tabla `producto`
 --
 
-INSERT INTO `producto` (`prod_cod`, `prod_nombre_comercial`, `prod_precio_compra`, `prod_precio_venta`, `mar_codigo`, `cat_codigo`, `uni_codigo`, `alm_codigo`) VALUES
-(0, 'pruebaproducto', '10.00', '11.00', 1, 1, 1, 1);
+INSERT INTO `producto` (`prod_cod`, `prod_nombre_comercial`, `prod_precio_compra`, `prod_precio_venta`, `prod_cant`, `mar_codigo`, `cat_codigo`, `uni_codigo`, `alm_codigo`) VALUES
+(3, 'DFGHGJN1233', '14.00', '12.00', '10', 1, 1, 1, 1),
+(4, 'DESMANTELAMIENTO', '1.00', '100.00', '100', 1, 1, 1, 2),
+(5, 'PRUEBA2', '10.00', '5.00', '100', 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -923,7 +1017,7 @@ DROP TABLE IF EXISTS `unidad_medida`;
 CREATE TABLE `unidad_medida` (
   `uni_codigo` int(11) NOT NULL,
   `uni_descripcion` varchar(45) NOT NULL,
-  `uni_estado` char(8) DEFAULT NULL
+  `uni_estado` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -931,7 +1025,11 @@ CREATE TABLE `unidad_medida` (
 --
 
 INSERT INTO `unidad_medida` (`uni_codigo`, `uni_descripcion`, `uni_estado`) VALUES
-(1, 'prueba', '1');
+(1, 'prueba0', 0),
+(2, 'Prueba2', 1),
+(3, 'Prueba3', 1),
+(4, 'prueba6', 1),
+(5, 'Prueba5', 1);
 
 -- --------------------------------------------------------
 
@@ -1145,19 +1243,19 @@ ALTER TABLE `actividad_productos`
 -- AUTO_INCREMENT de la tabla `almacen`
 --
 ALTER TABLE `almacen`
-  MODIFY `alm_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `alm_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `cat_cod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `cat_cod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `cli_codigo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cli_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `compra`
@@ -1187,7 +1285,13 @@ ALTER TABLE `empleado`
 -- AUTO_INCREMENT de la tabla `marca`
 --
 ALTER TABLE `marca`
-  MODIFY `mar_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `mar_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT de la tabla `producto`
+--
+ALTER TABLE `producto`
+  MODIFY `prod_cod` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
@@ -1211,7 +1315,7 @@ ALTER TABLE `tipo_documento`
 -- AUTO_INCREMENT de la tabla `unidad_medida`
 --
 ALTER TABLE `unidad_medida`
-  MODIFY `uni_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `uni_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
@@ -1241,7 +1345,7 @@ ALTER TABLE `actividad_empleado`
 --
 ALTER TABLE `actividad_productos`
   ADD CONSTRAINT `FK_actividad_productos_actividad` FOREIGN KEY (`act_cod`) REFERENCES `actividad` (`act_cod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_actividad_productos_producto` FOREIGN KEY (`prod_cod`) REFERENCES `producto` (`prod_cod`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_actividad_productos_producto` FOREIGN KEY (`prod_cod`) REFERENCES `producto` (`prod_cod`);
 
 --
 -- Filtros para la tabla `compra`
@@ -1253,8 +1357,8 @@ ALTER TABLE `compra`
 -- Filtros para la tabla `compra_detalle`
 --
 ALTER TABLE `compra_detalle`
-  ADD CONSTRAINT `comp_cod` FOREIGN KEY (`comp_cod`) REFERENCES `compra` (`comp_cod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `prod_cod` FOREIGN KEY (`prod_cod`) REFERENCES `producto` (`prod_cod`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_compra_detalle_producto` FOREIGN KEY (`prod_cod`) REFERENCES `producto` (`prod_cod`),
+  ADD CONSTRAINT `comp_cod` FOREIGN KEY (`comp_cod`) REFERENCES `compra` (`comp_cod`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Filtros para la tabla `conformidad`
@@ -1268,7 +1372,7 @@ ALTER TABLE `conformidad`
 ALTER TABLE `detalle_presupuesto`
   ADD CONSTRAINT `FK_detalle_presupuesto_categoria` FOREIGN KEY (`cat_cod`) REFERENCES `categoria` (`cat_cod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `FK_detalle_presupuesto_presupuesto` FOREIGN KEY (`pre_cod`) REFERENCES `presupuesto` (`pres_cod`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `FK_detalle_presupuesto_producto` FOREIGN KEY (`pro_cod`) REFERENCES `producto` (`prod_cod`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `FK_detalle_presupuesto_producto` FOREIGN KEY (`pro_cod`) REFERENCES `producto` (`prod_cod`);
 
 --
 -- Filtros para la tabla `empleado`

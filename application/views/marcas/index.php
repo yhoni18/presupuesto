@@ -1,7 +1,7 @@
 
 <div  style='padding: 1.5em;'>
     <div class="callout callout-info">
-        <h2>Lista de Productos</h2>
+        <h2>Lista de Marcas</h2>
     </div>
 
     <div class="row">
@@ -26,7 +26,7 @@
         </div>
         
         <div class="col-xs-12">
-            <a class="btn btn-success" href="<?= site_url(['producto', 'create']) ?>" style="margin-bottom: 1.3em;">
+            <a class="btn btn-success" href="<?= site_url(['marca', 'create']) ?>" style="margin-bottom: 1.3em;">
                 <i class="fa fa-fw fa-plus"></i> Agregar
             </a>
         </div>
@@ -35,32 +35,23 @@
             <table  class="table table-striped table-bordered">
                 <thead>
                     <!--<th>Código</th>-->
-                    <th>Nombre Comercial</th>
-                    <th>Precio Compra</th>   
-                    <th>Precio Venta</th> 
-                    <th>Cantidad</th> 
-                     
-                    <th>Categoria</th>
-                    <th>Unidad de Medida</th>
-                    <th>Almacen</th>
+                    <th>Nombre</th>
+                    <th>Estado</th>
                     <th>Acciones</th>
                 </thead>
                 <tbody>
                     <?php foreach($rows as $row): ?>
                         <tr>
-                            <td><?=$row->prod_nombre_comercial?></td>
-                            <td><?=$row->prod_precio_compra?></td>
-                            <td><?=$row->prod_precio_venta?></td>
-                            <td><?=$row->prod_cant?></td>
-                            <td><?=$row->cat_nombre?></td>
-                            <td><?=$row->uni_descripcion?></td>
-                            <td><?=$row->alm_nombre?></td>
+                            <td><?=$row->mar_nombre?></td>                            
+                            <td> <?=$row->mar_estado == '1' ? '<i class="fa fa-fw fa-check"></i>' : 
+                            '<i class="fa fa-fw fa-remove"></i>'?></td>
+                            
                             <td>
                                 <div class="btn-group btn-group-sm">
-                                    <a title="Editar" class="btn btn-primary" href="<?= site_url('producto/edit/'.$row->prod_cod) ?>">
+                                    <a title="Editar" class="btn btn-primary" href="<?= site_url('marca/edit/'.$row->mar_codigo) ?>">
                                         <i class="fa fa-fw fa-pencil"></i>
                                     </a>
-                                    <a title="Eliminar" class="btn btn-danger" href="<?= site_url('producto/destroy/'.$row->prod_cod) ?>"">
+                                    <a title="Eliminar" class="btn btn-danger" href="<?= site_url('marca/destroy/'.$row->mar_codigo) ?>">
                                         <i class="fa fa-fw fa-remove"></i>
                                     </a>
                                     
