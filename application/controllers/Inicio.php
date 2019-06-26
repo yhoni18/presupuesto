@@ -37,7 +37,6 @@
 
                     $this->load->view('index/menu');
                     $this->load->view('index/bienvenido');
-                    $this->load->view('index/footer');
 
                 } else {
                     $this->load->view('inicio/login', ['rpta' => 'Cuenta de usuario deshabilitada']);

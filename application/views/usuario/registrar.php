@@ -22,12 +22,14 @@
                 <td><select class='form-control' id='txtUsuEmpCodigo' name='txtUsuEmpCodigo' title=''>
                         <option value='0'>(Seleccione)</option>
                         <?php foreach ($emp_list as $emp_row) { ?>
+                        
                             <option value='<?= "$emp_row[emp_codigo]" ?>'
                                 <?php if (isset($usu_row)) {
                                   echo  selectIf($usu_row['emp_codigo'] == $emp_row['emp_codigo']);
                                 } ?>>
                                 <?= "$emp_row[emp_nombre] $emp_row[emp_ape_pat] $emp_row[emp_ape_mat]"; ?>
                             </option>
+
                         <?php } ?>
                     </select>
                 </td>

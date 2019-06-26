@@ -10,7 +10,7 @@ class Producto_model extends CI_Model {
     }
 
     public function fetch_all_state() {
-        $query = $this->db->query("CALL PA_Listar_producto('', 1)");
+        $query = $this->db->query("CALL PA_Listar_producto()");
         $result = $query->result();
         $query->next_result();
         $query->free_result();

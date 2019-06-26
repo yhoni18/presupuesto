@@ -25,8 +25,21 @@ class Presupuesto extends CI_Controller
         $this->load->view('presupuesto/show');
     }
 
+    public function create() {
+        $this->load->model('producto_model');
+        $products = $this->producto_model->fetch_all_state();
+
+        $this->load->view('index/header');
+        $this->load->view('index/menu');
+        $this->load->view('presupuesto/create', compact('products'));
+    }
+
     public function destroy($id)
     {
 
+    }
+
+    public function store() {
+        
     }
 }

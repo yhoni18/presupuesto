@@ -31,7 +31,8 @@
                     <select name="mar_codigo" class="form-control">
                         <option>-- SELECCIONE --</option>
                         <?php foreach($marcas as $marca): ?>
-                        <option <?= $marca->mar_codigo == $producto->mar_codigo ? "selected" : "" ?> value="<?=$marca->mar_codigo?>"><?=$marca->mar_nombre?></option>
+                        <option <?= $marca->mar_codigo == $producto->mar_codigo ? 
+                        "selected" : "" ?> value="<?=$marca->mar_codigo?>"><?=$marca->mar_nombre?></option>
                         <?php endforeach; ?>
                     </select>
                 </div>

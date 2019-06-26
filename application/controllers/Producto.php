@@ -28,14 +28,7 @@ class Producto extends CI_Controller {
         $this->load->view('productos/create', compact('categorias','marcas', 'almacenes', 'unidades'));
     }
 
-    public function show($id) {
-        $this->load->model('producto_model');
-        $producto = $this->producto_model->getId($id);
-        $this->load->view('imports/header');
-        $this->load->view('productos/show', compact('producto'));
-        $this->load->view('imports/footer');
-    }
-
+    
     public function edit($id) {
         $this->load->model('producto_model');
         $this->load->model('categoria_model');

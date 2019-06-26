@@ -24,6 +24,8 @@
         transition     : all 0.2s;
     }
 </style>
+<body class="hold-transition login-page">
+<div class="login-box">
 <div class="bg-gradient-light " style='height: 100%;'>
     <div class='container'>
         <div class="row">
@@ -57,3 +59,5 @@
         </div>
     </div>
 </div>
+
+</body>

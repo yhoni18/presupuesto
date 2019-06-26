@@ -39,6 +39,7 @@
                     </select>
                 </div>
             </div>
+
             <div class="col-xs-12">
                 <div class="form-group input-group">
                     <span class="input-group-addon">Unidad</span>
@@ -50,6 +51,8 @@
                     </select>
                 </div>
             </div>
+            
+
             <div class="col-xs-12">
                 <div class="form-group input-group">
                     <span class="input-group-addon">Almacen</span>

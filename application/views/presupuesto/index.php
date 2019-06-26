@@ -5,7 +5,10 @@
 
     <div class="row">
         <div class="col-xs-12">
-        
+            <a href="<?= site_url(['presupuesto', 'create']) ?>" class="btn btn-success" style="margin-bottom:1.3em;">
+                <i class="fa fa-plus"></i>
+                <span>Agregar</span>
+            </a>
         </div>
         <div class="col-xs-12">
             <?php if ($this->session->flashdata('correcto')): ?>
